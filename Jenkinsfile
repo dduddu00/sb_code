@@ -81,12 +81,12 @@ pipeline {
             }
         }
     }
-    stage('Docker image push') {
-        steps {
-            sh 'docker rm -rf sb'
-            sh "docker run -dp 5656:8085 --name sb ${dockerHubRegistry}:${currentBuild.number}"
+    stage('docker container deploy') {
+      steps {
+        sh 'docker rm -f sb'
+        sh "docker run -dp 5656:8085 --name sb ${dockerHubRegistry}:${currentBuild.number}"
+        // maven 플러그인이 미리 설치 되어있어야 함
         }
-
         post {
             failure {
                 echo 'docker container deploy failure'
@@ -96,5 +96,5 @@ pipeline {
             }
         }
     }
-    }
+  }
 }
