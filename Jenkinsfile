@@ -92,13 +92,15 @@ pipeline {
         // maven 플러그인이 미리 설치 되어있어야 함
         }
         post {
-            failure {
-                echo 'docker container deploy failure'
-            }
-            success {
-                echo 'docker container deploy success'
-            }
+        failure {
+          echo 'docker container deployment failure'
+          slackSend (color: '#FF0000', message: "FAILURE: docker container deployment '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
+        success {
+          echo 'docker container deployment success'
+          slackSend (color: '#0000FF', message: "SUCCESS: docker container deployment '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+      }
     }
   }
 }
