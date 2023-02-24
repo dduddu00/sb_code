@@ -5,7 +5,7 @@ pipeline {
     maven 'my_maven'
   }
 
-  enviroment {
+  environment  {
     gitName = 'dduddu00'
     gitEmail = 'tndusdlsms@nate.com'
     gitWebaddress = 'https://github.com/dduddu00/sb_code.git'
