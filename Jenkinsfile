@@ -47,7 +47,7 @@ pipeline {
     }
     stage('Docker image Build') {
         steps {
-            sh "docker build -t ${dockerHubRegistry}:${currentBuild.number}"
+            sh "docker build -t ${dockerHubRegistry}:${currentBuild.number} ."
             sh "docker build -t ${dockerHubRegistry}:latest ."
 
             // choisooyeon/sbimage:1 이런식으로 빌드가 될 것이다. 
