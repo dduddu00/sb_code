@@ -13,6 +13,7 @@ pipeline {
             //위 주소 두 개는 git에서 초록색 code 누르면 나옴 (HTTPS, SSH)
     gitCredential = 'git_cre' //git Credential 생성시의 ID
     dockerHubRegistry = 'choisooyeon/sbimage' 
+    dockerHubRegistryCredential = 'docker_cre' // dcker Credential 생성시의 ID
   }
 
   stages {
@@ -49,10 +50,8 @@ pipeline {
         steps {
             sh "docker build -t ${dockerHubRegistry}:${currentBuild.number} ."
             sh "docker build -t ${dockerHubRegistry}:latest ."
-
             // choisooyeon/sbimage:1 이런식으로 빌드가 될 것이다. 
             // currentBuild.number => 젠킨스에서 제공하는 빌드넘버 변수
-            
         }
         post {
             failure {
@@ -60,6 +59,25 @@ pipeline {
             }
             success {
                 echo 'docker image build success'
+            }
+        }
+    }
+    stage('Docker image push') {
+        steps {
+            withDockerRegistry(credentialsId: dockerHubRegistryCredential, url: '') {
+                // withDockerRegistry : docker pipeline 플러그인 설치시 사용가능.
+                // dockerHubRegistryCredential : environment에서 선언한 docker_cre  
+            sh "docker push ${dockerHubRegistry}:${currentBuild.number}"
+            sh "docker push ${dockerHubRegistry}:latest"
+          }
+
+        }
+        post {
+            failure {
+                echo 'docker image push failure'
+            }
+            success {
+                echo 'docker image push success'
             }
         }
     }
