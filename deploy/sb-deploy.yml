@@ -28,4 +28,4 @@ spec:
     spec:
       containers:
         - name: spring
-          image: choisooyeon/sbimage:21
+          image: choisooyeon/sbimage:22
